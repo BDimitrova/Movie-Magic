@@ -16,9 +16,18 @@
 
             <ul class="menu">
                 <li><a href="/">Home</a></li>
-                <li><a href="/create">Create Post</a></li>
-                <li><a href="/search">Search</a></li>
                 <li><a href="/about">About</a></li>
+                <li><a href="/search">Search</a></li>
+                {{#if user}}
+                <!--Users-->
+                <li><a href="/movies/create-post">Create Post</a></li>
+                <li><a href="/movies/create-cast">Create Cast</a></li>
+                <li><a href="/auth/logout">Logout</a></li>
+                {{else}}
+                <!--Guest-->
+                <li><a href="/auth/login">Login</a></li>
+                <li><a href="/auth/register">Register</a></li>
+                {{/if}}
             </ul>
 
         </nav>
