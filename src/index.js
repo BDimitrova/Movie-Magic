@@ -1,5 +1,5 @@
 const express = require('express');
-const routes = require('./routes');
+const routers = require('./routes');
 const { PORT } = require('./constants');
 const initDatabase = require('./config/mongooseConfig');
 
@@ -8,7 +8,7 @@ const app = express();
 require('./config/hbsConfig')(app);
 require('./config/expressConfig')(app);
 
-app.use(routes);
+app.use(routers);
 
 initDatabase()
     .then(() => {

@@ -1,13 +1,13 @@
 const router = require('express').Router();
 const authServices = require('../services/authServices');
-const { isGuest, isAuth } = require('../middleware/authMiddleware');
+// const { isGuest, isAuth } = require('../middleware/authMiddleware');
 const { AUTH_COOKIE_NAME } = require('../constants');
 
-router.get('/login', isGuest, (req, res) => {
+router.get('/login', (req, res) => {
     res.render('auth/login');
 });
 
-router.post('/login', isGuest, async (req, res) => {
+router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
         let token = await authServices.login({
@@ -17,17 +17,17 @@ router.post('/login', isGuest, async (req, res) => {
         res.cookie(AUTH_COOKIE_NAME, token);
         res.redirect('/');
     } catch (error) {
-        res.render('auth/login', { error: error.message });
+        res.render('auth/login', {error: error.message});
     }
 
 });
 
-router.get('/register', isGuest, (req, res) => {
+router.get('/register', (req, res) => {
     res.render('auth/register');
 });
 
-router.post('/register', isGuest, async (req, res) => {
-    const { firstName, lastName, email, password, rePass } = req.body;
+router.post('/register', async (req, res) => {
+    const {email, password, rePass } = req.body;
 
     if (password !== rePass) {
         res.locals.error = 'Passwords do not match!'
@@ -37,8 +37,6 @@ router.post('/register', isGuest, async (req, res) => {
     try {
 
         await authServices.register({
-            firstName,
-            lastName,
             email,
             password
         });
@@ -51,6 +49,7 @@ router.post('/register', isGuest, async (req, res) => {
 });
 
 function getErrorMessage(error) {
+    // console.log(error);
     let errorsArr = Object.keys(error.errors);
 
     if (errorsArr.length > 0) {
@@ -61,7 +60,7 @@ function getErrorMessage(error) {
 
 }
 
-router.get('/logout', isAuth, (req, res) => {
+router.get('/logout', (req, res) => {
     res.clearCookie(AUTH_COOKIE_NAME);
     res.redirect('/');
 });
